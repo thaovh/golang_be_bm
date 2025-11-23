@@ -1,0 +1,129 @@
+syntax = "proto3";
+
+package auth.v1;
+
+import "google/api/annotations.proto";
+
+option go_package = "github.com/go-kratos/kratos-layout/api/auth/v1;v1";
+
+service AuthService {
+  // Login with email/username and password
+  rpc Login (LoginRequest) returns (LoginResponse) {
+    option (google.api.http) = {
+      post: "/api/v1/auth/login"
+      body: "*"
+    };
+  }
+  
+  // Register new user
+  rpc Register (RegisterRequest) returns (RegisterResponse) {
+    option (google.api.http) = {
+      post: "/api/v1/auth/register"
+      body: "*"
+    };
+  }
+  
+  // Refresh access token
+  rpc RefreshToken (RefreshTokenRequest) returns (RefreshTokenResponse) {
+    option (google.api.http) = {
+      post: "/api/v1/auth/refresh"
+      body: "*"
+    };
+  }
+  
+  // Logout (revoke token)
+  rpc Logout (LogoutRequest) returns (LogoutResponse) {
+    option (google.api.http) = {
+      post: "/api/v1/auth/logout"
+      body: "*"
+    };
+  }
+  
+  // Verify token and get current user
+  rpc GetCurrentUser (GetCurrentUserRequest) returns (GetCurrentUserResponse) {
+    option (google.api.http) = {
+      get: "/api/v1/auth/me"
+    };
+  }
+  
+  // Revoke all user tokens
+  rpc RevokeAllTokens (RevokeAllTokensRequest) returns (RevokeAllTokensResponse) {
+    option (google.api.http) = {
+      post: "/api/v1/auth/revoke-all"
+      body: "*"
+    };
+  }
+}
+
+message LoginRequest {
+  string email = 1;      // Email or username
+  string password = 2;
+}
+
+message LoginResponse {
+  string access_token = 1;
+  string refresh_token = 2;
+  int64 expires_in = 3;
+  string token_type = 4;
+  User user = 5;
+}
+
+message RegisterRequest {
+  string email = 1;
+  string username = 2;
+  string password = 3;
+  string full_name = 4;
+}
+
+message RegisterResponse {
+  string access_token = 1;
+  string refresh_token = 2;
+  int64 expires_in = 3;
+  string token_type = 4;
+  User user = 5;
+}
+
+message RefreshTokenRequest {
+  string refresh_token = 1;
+}
+
+message RefreshTokenResponse {
+  string access_token = 1;
+  string refresh_token = 2;
+  int64 expires_in = 3;
+  string token_type = 4;
+}
+
+message LogoutRequest {
+  string refresh_token = 1; // Optional, if not provided, logout current session
+}
+
+message LogoutResponse {
+  bool success = 1;
+}
+
+message GetCurrentUserRequest {
+  // Token from Authorization header
+}
+
+message GetCurrentUserResponse {
+  User user = 1;
+}
+
+message RevokeAllTokensRequest {
+  // Token from Authorization header
+}
+
+message RevokeAllTokensResponse {
+  bool success = 1;
+}
+
+message User {
+  string id = 1;
+  string email = 2;
+  string username = 3;
+  string full_name = 4;
+  string role = 5;
+  string status = 6;
+}
+

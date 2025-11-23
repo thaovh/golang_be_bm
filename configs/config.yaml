@@ -1,0 +1,22 @@
+server:
+  http:
+    addr: 0.0.0.0:8000
+    timeout: 1s
+  grpc:
+    addr: 0.0.0.0:9000
+    timeout: 1s
+data:
+  write_database:
+    driver: postgres
+    source: host=127.0.0.1 port=5432 user=postgres password=t123456 dbname=bm_staff sslmode=disable  # Connection string cho PostgreSQL write database
+  read_database:
+    driver: postgres
+    source: host=127.0.0.1 port=5432 user=postgres password=t123456 dbname=bm_staff sslmode=disable  # Connection string cho PostgreSQL read database replica
+  redis:
+    addr: 127.0.0.1:6379
+    read_timeout: 0.2s
+    write_timeout: 0.2s
+auth:
+  jwt_secret: "your-secret-key-change-in-production-min-32-chars"
+  access_token_expiry: 3600    # 1 hour in seconds
+  refresh_token_expiry: 604800 # 7 days in seconds

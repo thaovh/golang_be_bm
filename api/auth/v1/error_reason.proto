@@ -1,0 +1,15 @@
+syntax = "proto3";
+
+package auth.v1;
+
+option go_package = "github.com/go-kratos/kratos-layout/api/auth/v1;v1";
+
+enum ErrorReason {
+  AUTH_UNSPECIFIED = 0;
+  INVALID_CREDENTIALS = 1;
+  TOKEN_EXPIRED = 2;
+  TOKEN_INVALID = 3;
+  TOKEN_REVOKED = 4;
+  USER_INACTIVE = 5;
+}
+

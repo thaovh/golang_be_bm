@@ -1,0 +1,533 @@
+# Generated with protoc-gen-openapi
+# https://github.com/google/gnostic/tree/master/cmd/protoc-gen-openapi
+
+openapi: 3.0.3
+info:
+    title: ""
+    version: 0.0.1
+paths:
+    /api/v1/auth/login:
+        post:
+            tags:
+                - AuthService
+            description: Login with email/username and password
+            operationId: AuthService_Login
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/auth.v1.LoginRequest'
+                required: true
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/auth.v1.LoginResponse'
+    /api/v1/auth/logout:
+        post:
+            tags:
+                - AuthService
+            description: Logout (revoke token)
+            operationId: AuthService_Logout
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/auth.v1.LogoutRequest'
+                required: true
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/auth.v1.LogoutResponse'
+    /api/v1/auth/me:
+        get:
+            tags:
+                - AuthService
+            description: Verify token and get current user
+            operationId: AuthService_GetCurrentUser
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/auth.v1.GetCurrentUserResponse'
+    /api/v1/auth/refresh:
+        post:
+            tags:
+                - AuthService
+            description: Refresh access token
+            operationId: AuthService_RefreshToken
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/auth.v1.RefreshTokenRequest'
+                required: true
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/auth.v1.RefreshTokenResponse'
+    /api/v1/auth/register:
+        post:
+            tags:
+                - AuthService
+            description: Register new user
+            operationId: AuthService_Register
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/auth.v1.RegisterRequest'
+                required: true
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/auth.v1.RegisterResponse'
+    /api/v1/auth/revoke-all:
+        post:
+            tags:
+                - AuthService
+            description: Revoke all user tokens
+            operationId: AuthService_RevokeAllTokens
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/auth.v1.RevokeAllTokensRequest'
+                required: true
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/auth.v1.RevokeAllTokensResponse'
+    /api/v1/users:
+        get:
+            tags:
+                - UserService
+            operationId: UserService_ListUsers
+            parameters:
+                - name: page
+                  in: query
+                  schema:
+                    type: integer
+                    format: int32
+                - name: pageSize
+                  in: query
+                  schema:
+                    type: integer
+                    format: int32
+                - name: search
+                  in: query
+                  schema:
+                    type: string
+                - name: role
+                  in: query
+                  schema:
+                    type: string
+                - name: status
+                  in: query
+                  schema:
+                    type: string
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/user.v1.ListUsersResponse'
+        post:
+            tags:
+                - UserService
+            description: Commands
+            operationId: UserService_CreateUser
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/user.v1.CreateUserRequest'
+                required: true
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/user.v1.CreateUserResponse'
+    /api/v1/users/email/{email}:
+        get:
+            tags:
+                - UserService
+            operationId: UserService_GetUserByEmail
+            parameters:
+                - name: email
+                  in: path
+                  required: true
+                  schema:
+                    type: string
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/user.v1.GetUserByEmailResponse'
+    /api/v1/users/username/{username}:
+        get:
+            tags:
+                - UserService
+            operationId: UserService_GetUserByUsername
+            parameters:
+                - name: username
+                  in: path
+                  required: true
+                  schema:
+                    type: string
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/user.v1.GetUserByUsernameResponse'
+    /api/v1/users/{id}:
+        get:
+            tags:
+                - UserService
+            description: Queries
+            operationId: UserService_GetUser
+            parameters:
+                - name: id
+                  in: path
+                  required: true
+                  schema:
+                    type: string
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/user.v1.GetUserResponse'
+        put:
+            tags:
+                - UserService
+            operationId: UserService_UpdateUser
+            parameters:
+                - name: id
+                  in: path
+                  required: true
+                  schema:
+                    type: string
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/user.v1.UpdateUserRequest'
+                required: true
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/user.v1.UpdateUserResponse'
+        delete:
+            tags:
+                - UserService
+            operationId: UserService_DeleteUser
+            parameters:
+                - name: id
+                  in: path
+                  required: true
+                  schema:
+                    type: string
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/user.v1.DeleteUserResponse'
+    /api/v1/users/{id}/change-password:
+        post:
+            tags:
+                - UserService
+            operationId: UserService_ChangePassword
+            parameters:
+                - name: id
+                  in: path
+                  required: true
+                  schema:
+                    type: string
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/user.v1.ChangePasswordRequest'
+                required: true
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/user.v1.ChangePasswordResponse'
+    /helloworld/{name}:
+        get:
+            tags:
+                - Greeter
+            description: Sends a greeting
+            operationId: Greeter_SayHello
+            parameters:
+                - name: name
+                  in: path
+                  required: true
+                  schema:
+                    type: string
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/helloworld.v1.HelloReply'
+components:
+    schemas:
+        auth.v1.GetCurrentUserResponse:
+            type: object
+            properties:
+                user:
+                    $ref: '#/components/schemas/auth.v1.User'
+        auth.v1.LoginRequest:
+            type: object
+            properties:
+                email:
+                    type: string
+                password:
+                    type: string
+        auth.v1.LoginResponse:
+            type: object
+            properties:
+                accessToken:
+                    type: string
+                refreshToken:
+                    type: string
+                expiresIn:
+                    type: string
+                tokenType:
+                    type: string
+                user:
+                    $ref: '#/components/schemas/auth.v1.User'
+        auth.v1.LogoutRequest:
+            type: object
+            properties:
+                refreshToken:
+                    type: string
+        auth.v1.LogoutResponse:
+            type: object
+            properties:
+                success:
+                    type: boolean
+        auth.v1.RefreshTokenRequest:
+            type: object
+            properties:
+                refreshToken:
+                    type: string
+        auth.v1.RefreshTokenResponse:
+            type: object
+            properties:
+                accessToken:
+                    type: string
+                refreshToken:
+                    type: string
+                expiresIn:
+                    type: string
+                tokenType:
+                    type: string
+        auth.v1.RegisterRequest:
+            type: object
+            properties:
+                email:
+                    type: string
+                username:
+                    type: string
+                password:
+                    type: string
+                fullName:
+                    type: string
+        auth.v1.RegisterResponse:
+            type: object
+            properties:
+                accessToken:
+                    type: string
+                refreshToken:
+                    type: string
+                expiresIn:
+                    type: string
+                tokenType:
+                    type: string
+                user:
+                    $ref: '#/components/schemas/auth.v1.User'
+        auth.v1.RevokeAllTokensRequest:
+            type: object
+            properties: {}
+        auth.v1.RevokeAllTokensResponse:
+            type: object
+            properties:
+                success:
+                    type: boolean
+        auth.v1.User:
+            type: object
+            properties:
+                id:
+                    type: string
+                email:
+                    type: string
+                username:
+                    type: string
+                fullName:
+                    type: string
+                role:
+                    type: string
+                status:
+                    type: string
+        helloworld.v1.HelloReply:
+            type: object
+            properties:
+                message:
+                    type: string
+            description: The response message containing the greetings
+        user.v1.ChangePasswordRequest:
+            type: object
+            properties:
+                id:
+                    type: string
+                newPassword:
+                    type: string
+        user.v1.ChangePasswordResponse:
+            type: object
+            properties:
+                success:
+                    type: boolean
+        user.v1.CreateUserRequest:
+            type: object
+            properties:
+                email:
+                    type: string
+                username:
+                    type: string
+                password:
+                    type: string
+                fullName:
+                    type: string
+                dateOfBirth:
+                    type: string
+                gender:
+                    type: string
+                role:
+                    type: string
+            description: Command Requests/Responses
+        user.v1.CreateUserResponse:
+            type: object
+            properties:
+                user:
+                    $ref: '#/components/schemas/user.v1.User'
+        user.v1.DeleteUserResponse:
+            type: object
+            properties:
+                success:
+                    type: boolean
+        user.v1.GetUserByEmailResponse:
+            type: object
+            properties:
+                user:
+                    $ref: '#/components/schemas/user.v1.User'
+        user.v1.GetUserByUsernameResponse:
+            type: object
+            properties:
+                user:
+                    $ref: '#/components/schemas/user.v1.User'
+        user.v1.GetUserResponse:
+            type: object
+            properties:
+                user:
+                    $ref: '#/components/schemas/user.v1.User'
+        user.v1.ListUsersResponse:
+            type: object
+            properties:
+                users:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/user.v1.User'
+                total:
+                    type: integer
+                    format: int32
+                page:
+                    type: integer
+                    format: int32
+                pageSize:
+                    type: integer
+                    format: int32
+        user.v1.UpdateUserRequest:
+            type: object
+            properties:
+                id:
+                    type: string
+                fullName:
+                    type: string
+                dateOfBirth:
+                    type: string
+                gender:
+                    type: string
+        user.v1.UpdateUserResponse:
+            type: object
+            properties:
+                user:
+                    $ref: '#/components/schemas/user.v1.User'
+        user.v1.User:
+            type: object
+            properties:
+                id:
+                    type: string
+                email:
+                    type: string
+                username:
+                    type: string
+                fullName:
+                    type: string
+                dateOfBirth:
+                    type: string
+                gender:
+                    type: string
+                lastLoginAt:
+                    type: string
+                lastLoginIp:
+                    type: string
+                role:
+                    type: string
+                status:
+                    type: string
+                createdAt:
+                    type: string
+                updatedAt:
+                    type: string
+            description: User message
+tags:
+    - name: AuthService
+    - name: Greeter
+      description: The greeting service definition.
+    - name: UserService
