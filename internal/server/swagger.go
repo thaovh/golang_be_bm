@@ -5,7 +5,6 @@ import (
 	"io/fs"
 	"net/http"
 	"os"
-	"strings"
 
 	kratoshttp "github.com/go-kratos/kratos/v2/transport/http"
 )
