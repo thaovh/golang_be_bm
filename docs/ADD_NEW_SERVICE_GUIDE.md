@@ -773,6 +773,10 @@ service.ProviderSet: NewProductService
    - ❌ Entity không có table
    - ✅ Tạo và run migration
 
+6. **Quên set audit fields**
+   - ❌ `created_by`/`updated_by` luôn NULL
+   - ✅ Gọi `entity.SetAuditFields(ctx, isCreate)` trước khi save/update
+
 ---
 
 ## 🚀 Quick Start Template
