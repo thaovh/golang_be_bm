@@ -41,6 +41,7 @@ func (l *LevelRouterLogger) WithContext(ctx context.Context) log.Logger {
 	stdoutLogger := log.NewHelper(l.fileLoggers.StdoutLogger).WithContext(ctx)
 
 	return &LevelRouterLoggerWithContext{
+		fileLoggers:  l.fileLoggers,
 		infoHelper:    infoHelperType{helper: infoLogger},
 		warnHelper:    warnHelperType{helper: warnLogger},
 		errorHelper:   errorHelperType{helper: errorLogger},
@@ -74,20 +75,18 @@ type LevelRouterLoggerWithContext struct {
 }
 
 // Log implements log.Logger interface with context
+// Note: log.Helper.Log() doesn't return a value, so we call the underlying logger directly
 func (l *LevelRouterLoggerWithContext) Log(level log.Level, keyvals ...interface{}) error {
 	switch level {
 	case log.LevelInfo:
-		_ = l.infoHelper.helper.Log(level, keyvals...)
-		return nil
+		// Use the underlying logger directly, not the helper
+		return l.fileLoggers.InfoLogger.Log(level, keyvals...)
 	case log.LevelWarn:
-		_ = l.warnHelper.helper.Log(level, keyvals...)
-		return nil
+		return l.fileLoggers.WarningLogger.Log(level, keyvals...)
 	case log.LevelError:
-		_ = l.errorHelper.helper.Log(level, keyvals...)
-		return nil
+		return l.fileLoggers.ErrorLogger.Log(level, keyvals...)
 	default:
-		_ = l.stdoutHelper.helper.Log(level, keyvals...)
-		return nil
+		return l.fileLoggers.StdoutLogger.Log(level, keyvals...)
 	}
 }
 
