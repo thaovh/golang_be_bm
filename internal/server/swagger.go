@@ -80,27 +80,42 @@ func createSwaggerUIHTML() string {
   <script src="/api/docs/swagger-ui-bundle.js" charset="UTF-8"></script>
   <script src="/api/docs/swagger-ui-standalone-preset.js" charset="UTF-8"></script>
   <script>
-    window.onload = function() {
+    // Wait for scripts to load
+    function initSwaggerUI() {
       if (typeof SwaggerUIBundle === 'undefined') {
-        console.error('SwaggerUIBundle is not loaded. Check if swagger-ui-bundle.js is accessible.');
-        document.getElementById('swagger-ui').innerHTML = '<div style="padding: 20px; color: red;">Error: Swagger UI JavaScript files failed to load. Please check the console for details.</div>';
+        console.error('SwaggerUIBundle is not loaded. Retrying...');
+        setTimeout(initSwaggerUI, 100);
         return;
       }
-      window.ui = SwaggerUIBundle({
-        url: "/api/openapi.yaml",
-        dom_id: '#swagger-ui',
-        deepLinking: true,
-        presets: [
-          SwaggerUIBundle.presets.apis,
-          SwaggerUIStandalonePreset
-        ],
-        plugins: [
-          SwaggerUIBundle.plugins.DownloadUrl
-        ],
-        layout: "StandaloneLayout",
-        validatorUrl: null
-      });
-    };
+      
+      try {
+        window.ui = SwaggerUIBundle({
+          url: "/api/openapi.yaml",
+          dom_id: '#swagger-ui',
+          deepLinking: true,
+          presets: [
+            SwaggerUIBundle.presets.apis,
+            SwaggerUIStandalonePreset
+          ],
+          plugins: [
+            SwaggerUIBundle.plugins.DownloadUrl
+          ],
+          layout: "StandaloneLayout",
+          validatorUrl: null
+        });
+      } catch (error) {
+        console.error('Error initializing Swagger UI:', error);
+        document.getElementById('swagger-ui').innerHTML = '<div style="padding: 20px; color: red;">Error: Failed to initialize Swagger UI. Please check the console for details.</div>';
+      }
+    }
+    
+    // Initialize when page loads
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', initSwaggerUI);
+    } else {
+      // If already loaded, wait a bit for scripts
+      setTimeout(initSwaggerUI, 100);
+    }
   </script>
 </body>
 </html>`
