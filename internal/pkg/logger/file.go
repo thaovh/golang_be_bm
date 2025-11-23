@@ -1,7 +1,6 @@
 package logger
 
 import (
-	"io"
 	"os"
 	"path/filepath"
 
