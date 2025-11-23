@@ -83,5 +83,9 @@ func NewHTTPServer(c *conf.Server, greeter *service.GreeterService, user *servic
 	helloworldv1.RegisterGreeterHTTPServer(srv, greeter)
 	userv1.RegisterUserServiceHTTPServer(srv, user)
 	authv1.RegisterAuthServiceHTTPServer(srv, auth)
+	
+	// Register Swagger UI
+	RegisterSwaggerUI(srv)
+	
 	return srv
 }
