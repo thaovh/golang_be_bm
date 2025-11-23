@@ -46,6 +46,7 @@ cmd/server/wire_gen.go
 # Logs
 *.log
 /tmp/
+logs/
 
 # Database
 *.db

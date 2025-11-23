@@ -137,20 +137,29 @@ func NewAuthConfigFromConf(auth *conf.Auth) *AuthConfig {
 func (uc *AuthUsecase) Login(ctx context.Context, req *LoginRequest) (*LoginResponse, error) {
 	uc.log.WithContext(ctx).Infof("Login attempt: %s", req.Email)
 
-	// Find user by email or username
-	user, err := uc.userQueryRepo.FindByEmail(ctx, req.Email)
+	var user *User
+	var err error
+
+	// Find user by email first
+	user, err = uc.userQueryRepo.FindByEmail(ctx, req.Email)
 	if err != nil {
-		return nil, err
+		// If error (not just not found), log warning but continue to try username
+		// FindByEmail returns nil, nil for not found, so any error here is a real error
+		uc.log.WithContext(ctx).Warnf("Error finding user by email, will try username: %v", err)
+		user = nil
 	}
 
 	// If not found by email, try username
 	if user == nil {
 		user, err = uc.userQueryRepo.FindByUsername(ctx, req.Email)
 		if err != nil {
+			// FindByUsername returns nil, nil for not found, so any error here is a real error
+			uc.log.WithContext(ctx).Errorf("Error finding user by username: %v", err)
 			return nil, err
 		}
 	}
 
+	// If still not found after trying both, return invalid credentials
 	if user == nil {
 		return nil, ErrInvalidCredentials
 	}

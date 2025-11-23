@@ -47,8 +47,8 @@ echo -e "${YELLOW}Test 2: Login${NC}"
 RESPONSE=$(curl -s -X POST "${BASE_URL}${API_BASE}/auth/login" \
   -H "Content-Type: application/json" \
   -d '{
-    "email": "admin@example.com",
-    "password": "Admin@123"
+    "identifier": "testauth@example.com",
+    "password": "TestAuth@123"
   }')
 
 echo "$RESPONSE" | jq '.' 2>/dev/null || echo "$RESPONSE"

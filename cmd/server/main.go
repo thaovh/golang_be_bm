@@ -5,6 +5,7 @@ import (
 	"os"
 
 	"github.com/go-kratos/kratos-layout/internal/conf"
+	"github.com/go-kratos/kratos-layout/internal/pkg/logger"
 
 	"github.com/go-kratos/kratos/v2"
 	"github.com/go-kratos/kratos/v2/config"
@@ -49,12 +50,21 @@ func newApp(logger log.Logger, gs *grpc.Server, hs *http.Server) *kratos.App {
 
 func main() {
 	flag.Parse()
-	logger := log.With(log.NewStdLogger(os.Stdout),
-		"ts", log.DefaultTimestamp,
-		"caller", log.DefaultCaller,
-		"service.id", id,
-		"service.name", Name,
-		"service.version", Version,
+	
+	// Create file loggers with rotation support
+	fileLoggers, err := logger.NewFileLoggers(
+		logger.DefaultFileLoggerConfig(),
+		id,
+		Name,
+		Version,
+	)
+	if err != nil {
+		panic(err)
+	}
+
+	// Use stdout logger with tracing support for main logger
+	mainLogger := log.With(
+		fileLoggers.StdoutLogger,
 		"trace.id", tracing.TraceID(),
 		"span.id", tracing.SpanID(),
 	)
@@ -74,7 +84,7 @@ func main() {
 		panic(err)
 	}
 
-	app, cleanup, err := wireApp(bc.Server, bc.Data, bc.Auth, logger)
+	app, cleanup, err := wireApp(bc.Server, bc.Data, bc.Auth, mainLogger)
 	if err != nil {
 		panic(err)
 	}
