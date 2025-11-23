@@ -14,6 +14,7 @@ import (
 	"github.com/go-kratos/kratos/v2/middleware/selector"
 	"github.com/go-kratos/kratos/v2/middleware/recovery"
 	"github.com/go-kratos/kratos/v2/transport/http"
+	"github.com/go-kratos/kratos/v2/middleware/logging"
 )
 
 // NewHTTPServer new an HTTP server.
@@ -41,6 +42,10 @@ func NewHTTPServer(c *conf.Server, greeter *service.GreeterService, user *servic
 	var opts = []http.ServerOption{
 		http.Middleware(
 			recovery.Recovery(),
+			// Request ID middleware (should be first to generate ID for all requests)
+			middleware.RequestIDMiddleware(),
+			// HTTP logging middleware (should be early to capture all requests)
+			middleware.LoggingMiddleware(logger),
 			// Apply rate limiting to login/register endpoints
 			selector.Server(loginRateLimit).
 				Match(func(ctx context.Context, operation string) bool {
