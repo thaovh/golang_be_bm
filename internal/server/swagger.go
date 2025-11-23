@@ -5,6 +5,7 @@ import (
 	"io/fs"
 	"net/http"
 	"os"
+	"strings"
 
 	kratoshttp "github.com/go-kratos/kratos/v2/transport/http"
 )
@@ -36,7 +37,7 @@ func RegisterSwaggerUI(srv *kratoshttp.Server) {
 
 	fileServer := http.FileServer(http.FS(swaggerUI))
 
-	// Serve Swagger UI index with custom OpenAPI spec URL
+	// Serve Swagger UI index
 	srv.HandleFunc("/api/docs", func(w http.ResponseWriter, r *http.Request) {
 		if r.URL.Path == "/api/docs" || r.URL.Path == "/api/docs/" {
 			w.Header().Set("Content-Type", "text/html")
@@ -44,26 +45,10 @@ func RegisterSwaggerUI(srv *kratoshttp.Server) {
 			w.Write([]byte(html))
 			return
 		}
-		
-		// Serve static files
-		// Remove /api/docs prefix
-		r.URL.Path = r.URL.Path[len("/api/docs"):]
-		if r.URL.Path == "" {
-			r.URL.Path = "/"
-		}
-		fileServer.ServeHTTP(w, r)
 	})
 
-	// Handle static assets with /api/docs/ prefix
-	srv.HandleFunc("/api/docs/", func(w http.ResponseWriter, r *http.Request) {
-		// Remove /api/docs prefix
-		path := r.URL.Path[len("/api/docs"):]
-		if path == "" {
-			path = "/"
-		}
-		r.URL.Path = path
-		fileServer.ServeHTTP(w, r)
-	})
+	// Serve static assets with /api/docs/ prefix using HandlePrefix
+	srv.HandlePrefix("/api/docs/", http.StripPrefix("/api/docs", fileServer))
 }
 
 // createSwaggerUIHTML creates Swagger UI HTML with our OpenAPI spec URL
@@ -93,10 +78,15 @@ func createSwaggerUIHTML() string {
 </head>
 <body>
   <div id="swagger-ui"></div>
-  <script src="/api/docs/swagger-ui-bundle.js"></script>
-  <script src="/api/docs/swagger-ui-standalone-preset.js"></script>
+  <script src="/api/docs/swagger-ui-bundle.js" charset="UTF-8"></script>
+  <script src="/api/docs/swagger-ui-standalone-preset.js" charset="UTF-8"></script>
   <script>
     window.onload = function() {
+      if (typeof SwaggerUIBundle === 'undefined') {
+        console.error('SwaggerUIBundle is not loaded. Check if swagger-ui-bundle.js is accessible.');
+        document.getElementById('swagger-ui').innerHTML = '<div style="padding: 20px; color: red;">Error: Swagger UI JavaScript files failed to load. Please check the console for details.</div>';
+        return;
+      }
       window.ui = SwaggerUIBundle({
         url: "/api/openapi.yaml",
         dom_id: '#swagger-ui',
