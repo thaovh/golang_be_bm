@@ -62,9 +62,12 @@ func main() {
 		panic(err)
 	}
 
-	// Use stdout logger with tracing support for main logger
+	// Create level router logger that routes logs to appropriate files
+	routerLogger := logger.NewLevelRouterLogger(fileLoggers)
+	
+	// Use router logger with tracing support for main logger
 	mainLogger := log.With(
-		fileLoggers.StdoutLogger,
+		routerLogger,
 		"trace.id", tracing.TraceID(),
 		"span.id", tracing.SpanID(),
 	)
