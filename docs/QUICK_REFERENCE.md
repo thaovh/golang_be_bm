@@ -108,5 +108,5 @@ DB_PASSWORD=xxx ./scripts/migrate.sh migrations/XXX_create_{name}s_table.sql
 
 ---
 
-**Xem chi tiết**: `ADD_NEW_SERVICE_GUIDE.md`
+**Xem chi tiết**: [ADD_NEW_SERVICE_GUIDE.md](ADD_NEW_SERVICE_GUIDE.md)
 

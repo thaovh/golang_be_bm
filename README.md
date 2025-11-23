@@ -108,19 +108,21 @@ make build
 
 ## 📚 Documentation
 
+Tất cả documentation được lưu trong thư mục [`docs/`](docs/).
+
 ### Getting Started
-- **[Quick Start Guide](QUICK_START.md)** - Hướng dẫn setup project từ đầu
-- **[Architecture](ARCHITECTURE.md)** - Kiến trúc tổng quan của hệ thống
-- **[Deployment Guide](DEPLOYMENT_GUIDE.md)** - Hướng dẫn triển khai
+- **[Quick Start Guide](docs/QUICK_START.md)** - Hướng dẫn setup project từ đầu
+- **[Architecture](docs/ARCHITECTURE.md)** - Kiến trúc tổng quan của hệ thống
+- **[Deployment Guide](docs/DEPLOYMENT_GUIDE.md)** - Hướng dẫn triển khai
 
 ### Adding New Services
-- **[Add New Service Guide](ADD_NEW_SERVICE_GUIDE.md)** - Hướng dẫn chi tiết thêm service mới (812 dòng)
-- **[Quick Reference](QUICK_REFERENCE.md)** - Quick reference card cho việc thêm service
+- **[Add New Service Guide](docs/ADD_NEW_SERVICE_GUIDE.md)** - Hướng dẫn chi tiết thêm service mới (812 dòng)
+- **[Quick Reference](docs/QUICK_REFERENCE.md)** - Quick reference card cho việc thêm service
 
 ### Services Documentation
-- **[Auth Service](AUTH_SERVICE.md)** - Authentication & Authorization
-- **[API Testing](API_TESTING.md)** - Hướng dẫn test API
-- **[Middleware Implementation](MIDDLEWARE_IMPLEMENTATION.md)** - Rate limiting & Auth middleware
+- **[Auth Service](docs/AUTH_SERVICE.md)** - Authentication & Authorization
+- **[API Testing](docs/API_TESTING.md)** - Hướng dẫn test API
+- **[Middleware Implementation](docs/MIDDLEWARE_IMPLEMENTATION.md)** - Rate limiting & Auth middleware
 
 ### Database
 - **[Migrations](migrations/README.md)** - Database migrations guide
