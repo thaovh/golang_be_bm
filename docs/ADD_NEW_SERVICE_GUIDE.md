@@ -84,7 +84,20 @@ func New{Service}Usecase(
 // Business methods
 func (uc *{Service}Usecase) Create{Service}(ctx context.Context, entity *{Service}Entity) (*{Service}Entity, error) {
     uc.log.WithContext(ctx).Infof("Create{Service}: %s", entity.Name)
+    
+    // Set audit fields from context (created_by, updated_by)
+    entity.SetAuditFields(ctx, true)
+    
     return uc.commandRepo.Save(ctx, entity)
+}
+
+func (uc *{Service}Usecase) Update{Service}(ctx context.Context, entity *{Service}Entity) (*{Service}Entity, error) {
+    uc.log.WithContext(ctx).Infof("Update{Service}: %s", entity.ID.String())
+    
+    // Set audit fields from context (updated_by)
+    entity.SetAuditFields(ctx, false)
+    
+    return uc.commandRepo.Update(ctx, entity)
 }
 
 func (uc *{Service}Usecase) Get{Service}(ctx context.Context, id uuid.UUID) (*{Service}Entity, error) {
@@ -98,6 +111,7 @@ func (uc *{Service}Usecase) Get{Service}(ctx context.Context, id uuid.UUID) (*{S
 - ✅ Tạo `Usecase` với business logic
 - ✅ Sử dụng `uuid.UUID` cho ID
 - ✅ Logging với context
+- ✅ Set audit fields (`SetAuditFields`) trong Create/Update methods
 
 ---
 
@@ -626,6 +640,7 @@ DB_PASSWORD=your_password ./scripts/migrate.sh migrations/XXX_create_{service_na
 - [ ] Define `CommandRepo` interface
 - [ ] Define `QueryRepo` interface
 - [ ] Create `Usecase` với business logic
+- [ ] **Set audit fields trong Create/Update methods** (`SetAuditFields`)
 - [ ] Add vào `biz.ProviderSet`
 
 ### Data Layer (data/)
