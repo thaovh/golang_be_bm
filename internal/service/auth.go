@@ -28,7 +28,7 @@ func (s *AuthService) Login(ctx context.Context, req *v1.LoginRequest) (*v1.Logi
 	userAgent := extractUserAgentFromContext(ctx)
 
 	loginReq := &biz.LoginRequest{
-		Email:    req.Email,
+		Email:    req.Identifier, // Identifier can be email or username
 		Password: req.Password,
 		IP:       ip,
 		UserAgent: userAgent,

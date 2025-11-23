@@ -103,6 +103,9 @@ func NewUserUsecase(
 func (uc *UserUsecase) CreateUser(ctx context.Context, user *User) (*User, error) {
 	uc.log.WithContext(ctx).Infof("CreateUser: %s", user.Email)
 
+	// Set audit fields from context
+	user.SetAuditFields(ctx, true)
+
 	// Check if user already exists
 	existing, _ := uc.queryRepo.FindByEmail(ctx, user.Email)
 	if existing != nil {
@@ -120,6 +123,10 @@ func (uc *UserUsecase) CreateUser(ctx context.Context, user *User) (*User, error
 // UpdateUser updates a user (Command)
 func (uc *UserUsecase) UpdateUser(ctx context.Context, user *User) (*User, error) {
 	uc.log.WithContext(ctx).Infof("UpdateUser: %s", user.ID.String())
+	
+	// Set audit fields from context
+	user.SetAuditFields(ctx, false)
+	
 	return uc.commandRepo.Update(ctx, user)
 }
 

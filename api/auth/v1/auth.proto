@@ -56,7 +56,7 @@ service AuthService {
 }
 
 message LoginRequest {
-  string email = 1;      // Email or username
+  string identifier = 1;  // Email or username
   string password = 2;
 }
 

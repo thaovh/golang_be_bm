@@ -1,8 +1,10 @@
 package biz
 
 import (
+	"context"
 	"time"
 
+	"github.com/go-kratos/kratos-layout/internal/middleware"
 	"github.com/gofrs/uuid/v5"
 	"gorm.io/gorm"
 )
@@ -63,5 +65,16 @@ func (b *BaseEntity) IsActive() bool {
 // IsDeleted checks if entity is soft deleted
 func (b *BaseEntity) IsDeleted() bool {
 	return b.DeletedAt.Valid
+}
+
+// SetAuditFields sets CreatedBy/UpdatedBy from context
+// isCreate: true for create operations, false for update operations
+func (b *BaseEntity) SetAuditFields(ctx context.Context, isCreate bool) {
+	if userID, ok := middleware.GetUserIDFromContext(ctx); ok {
+		if isCreate {
+			b.CreatedBy = &userID
+		}
+		b.UpdatedBy = &userID
+	}
 }
 

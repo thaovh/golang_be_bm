@@ -189,6 +189,14 @@ func (uc *AuthUsecase) Login(ctx context.Context, req *LoginRequest) (*LoginResp
 		IPAddress:        req.IP,
 		UserAgent:        req.UserAgent,
 	}
+	
+	// Set audit fields - user is creating their own token
+	authToken.SetAuditFields(ctx, true)
+	// If no user in context (public login), set created_by to the user themselves
+	if authToken.CreatedBy == nil {
+		authToken.CreatedBy = &user.ID
+		authToken.UpdatedBy = &user.ID
+	}
 
 	savedToken, err := uc.authCommandRepo.SaveToken(ctx, authToken)
 	if err != nil {
@@ -231,10 +239,25 @@ func (uc *AuthUsecase) Register(ctx context.Context, req *RegisterRequest) (*Log
 		FullName:     req.FullName,
 		Role:         "user", // Default role
 	}
+	
+	// Try to set audit fields from context (if authenticated user is creating)
+	user.SetAuditFields(ctx, true)
 
 	createdUser, err := uc.userCommandRepo.Save(ctx, user)
 	if err != nil {
 		return nil, err
+	}
+	
+	// If no created_by was set (public register), set it to the user themselves
+	if createdUser.CreatedBy == nil {
+		createdUser.CreatedBy = &createdUser.ID
+		createdUser.UpdatedBy = &createdUser.ID
+		// Update the user to save audit fields
+		_, err = uc.userCommandRepo.Update(ctx, createdUser)
+		if err != nil {
+			uc.log.WithContext(ctx).Warnf("Failed to update user audit fields: %v", err)
+			// Don't fail registration if this fails
+		}
 	}
 
 	// Generate tokens
@@ -258,6 +281,14 @@ func (uc *AuthUsecase) Register(ctx context.Context, req *RegisterRequest) (*Log
 		RefreshExpiresAt: now.Add(uc.refreshExpiry),
 		IPAddress:        req.IP,
 		UserAgent:        req.UserAgent,
+	}
+	
+	// Set audit fields - user is creating their own token
+	authToken.SetAuditFields(ctx, true)
+	// If no user in context (public register), set created_by to the user themselves
+	if authToken.CreatedBy == nil {
+		authToken.CreatedBy = &createdUser.ID
+		authToken.UpdatedBy = &createdUser.ID
 	}
 
 	savedToken, err := uc.authCommandRepo.SaveToken(ctx, authToken)
@@ -324,6 +355,14 @@ func (uc *AuthUsecase) RefreshToken(ctx context.Context, refreshToken string) (*
 	// Update token in database
 	token.Token = accessToken
 	token.ExpiresAt = time.Now().Add(uc.accessExpiry)
+	
+	// Set audit fields from context
+	token.SetAuditFields(ctx, false)
+	// If no user in context, set updated_by to the token's user
+	if token.UpdatedBy == nil {
+		token.UpdatedBy = &token.UserID
+	}
+	
 	_, err = uc.authCommandRepo.SaveToken(ctx, token)
 	if err != nil {
 		return nil, errors.InternalServer("TOKEN_SAVE_ERROR", "failed to update token")

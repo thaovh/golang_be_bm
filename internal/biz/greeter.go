@@ -59,12 +59,20 @@ func NewGreeterUsecase(
 // CreateGreeter creates a Greeter (Command operation)
 func (uc *GreeterUsecase) CreateGreeter(ctx context.Context, g *Greeter) (*Greeter, error) {
 	uc.log.WithContext(ctx).Infof("CreateGreeter: %v", g.Hello)
+	
+	// Set audit fields from context
+	g.SetAuditFields(ctx, true)
+	
 	return uc.commandRepo.Save(ctx, g)
 }
 
 // UpdateGreeter updates a Greeter (Command operation)
 func (uc *GreeterUsecase) UpdateGreeter(ctx context.Context, g *Greeter) (*Greeter, error) {
 	uc.log.WithContext(ctx).Infof("UpdateGreeter: %v", g.Hello)
+	
+	// Set audit fields from context
+	g.SetAuditFields(ctx, false)
+	
 	return uc.commandRepo.Update(ctx, g)
 }
 
