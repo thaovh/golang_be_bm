@@ -108,8 +108,8 @@ grpcurl -plaintext -d '{"id": 1}' localhost:9000 api.service.v1.Service/GetServi
 
 ## Next Steps
 
-1. Đọc [ARCHITECTURE.md](./ARCHITECTURE.md) để hiểu kiến trúc
-2. Đọc [DEPLOYMENT_GUIDE.md](./DEPLOYMENT_GUIDE.md) để triển khai
+1. Đọc [ARCHITECTURE.md](ARCHITECTURE.md) để hiểu kiến trúc
+2. Đọc [DEPLOYMENT_GUIDE.md](DEPLOYMENT_GUIDE.md) để triển khai
 3. Xem examples trong gateway project để học patterns
 
 ## Troubleshooting

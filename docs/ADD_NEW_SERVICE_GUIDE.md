@@ -801,10 +801,10 @@ DB_PASSWORD=xxx ./scripts/migrate.sh migrations/XXX_create_products_table.sql
 
 ## 📚 References
 
-- Clean Architecture: `ARCHITECTURE.md`
+- Clean Architecture: [ARCHITECTURE.md](ARCHITECTURE.md)
 - CQRS Pattern: See User/Auth service implementations
-- BaseEntity: `internal/biz/base.go`
-- Wire DI: `cmd/server/wire.go`
+- BaseEntity: `../internal/biz/base.go`
+- Wire DI: `../cmd/server/wire.go`
 
 ---
 
