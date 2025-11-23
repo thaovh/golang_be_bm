@@ -68,6 +68,7 @@ type stdoutHelperType struct {
 
 // LevelRouterLoggerWithContext is a context-aware logger that routes by level
 type LevelRouterLoggerWithContext struct {
+	fileLoggers  *FileLoggers
 	infoHelper   infoHelperType
 	warnHelper   warnHelperType
 	errorHelper  errorHelperType
