@@ -17,7 +17,7 @@ import (
 )
 
 // NewHTTPServer new an HTTP server.
-func NewHTTPServer(c *conf.Server, greeter *service.GreeterService, user *service.UserService, auth *service.AuthService, authConfig *conf.Auth, logger log.Logger) *http.Server {
+func NewHTTPServer(c *conf.Server, greeter *service.GreeterService, user *service.UserService, auth *service.AuthService, country *service.CountryService, authConfig *conf.Auth, logger log.Logger) *http.Server {
 	// Rate limiting for login endpoint
 	loginRateLimit := middleware.LoginRateLimit()
 
@@ -87,6 +87,7 @@ func NewHTTPServer(c *conf.Server, greeter *service.GreeterService, user *servic
 	helloworldv1.RegisterGreeterHTTPServer(srv, greeter)
 	userv1.RegisterUserServiceHTTPServer(srv, user)
 	authv1.RegisterAuthServiceHTTPServer(srv, auth)
+	countryv1.RegisterCountryServiceHTTPServer(srv, country)
 	
 	// Register Swagger UI
 	RegisterSwaggerUI(srv)

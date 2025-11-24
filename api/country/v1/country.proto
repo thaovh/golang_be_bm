@@ -1,0 +1,168 @@
+syntax = "proto3";
+
+package country.v1;
+
+import "google/api/annotations.proto";
+
+option go_package = "github.com/go-kratos/kratos-layout/api/country/v1;v1";
+
+service CountryService {
+  // Commands
+  rpc CreateCountry (CreateCountryRequest) returns (CreateCountryResponse) {
+    option (google.api.http) = {
+      post: "/api/v1/countries"
+      body: "*"
+    };
+  }
+  
+  rpc UpdateCountry (UpdateCountryRequest) returns (UpdateCountryResponse) {
+    option (google.api.http) = {
+      put: "/api/v1/countries/{id}"
+      body: "*"
+    };
+  }
+  
+  rpc DeleteCountry (DeleteCountryRequest) returns (DeleteCountryResponse) {
+    option (google.api.http) = {
+      delete: "/api/v1/countries/{id}"
+    };
+  }
+  
+  // Queries
+  rpc GetCountry (GetCountryRequest) returns (GetCountryResponse) {
+    option (google.api.http) = {
+      get: "/api/v1/countries/{id}"
+    };
+  }
+  
+  rpc GetCountryByCode (GetCountryByCodeRequest) returns (GetCountryByCodeResponse) {
+    option (google.api.http) = {
+      get: "/api/v1/countries/code/{code}"
+    };
+  }
+  
+  rpc ListCountries (ListCountriesRequest) returns (ListCountriesResponse) {
+    option (google.api.http) = {
+      get: "/api/v1/countries"
+    };
+  }
+  
+  rpc SearchCountries (SearchCountriesRequest) returns (SearchCountriesResponse) {
+    option (google.api.http) = {
+      get: "/api/v1/countries/search"
+    };
+  }
+}
+
+// Request/Response messages
+message CreateCountryRequest {
+  string code = 1;
+  string name = 2;
+  string name_en = 3;
+  string region = 4;
+  string sub_region = 5;
+  string currency_code = 6;
+  string currency_symbol = 7;
+  string phone_code = 8;
+  string time_zone = 9;
+  string flag = 10;
+  string capital = 11;
+  int64 population = 12;
+  string iso3166_alpha3 = 13;
+  string iso3166_numeric = 14;
+}
+
+message CreateCountryResponse {
+  Country country = 1;
+}
+
+message UpdateCountryRequest {
+  string id = 1;
+  string code = 2;
+  string name = 3;
+  string name_en = 4;
+  string region = 5;
+  string sub_region = 6;
+  string currency_code = 7;
+  string currency_symbol = 8;
+  string phone_code = 9;
+  string time_zone = 10;
+  string flag = 11;
+  string capital = 12;
+  int64 population = 13;
+  string iso3166_alpha3 = 14;
+  string iso3166_numeric = 15;
+  string status = 16;
+}
+
+message UpdateCountryResponse {
+  Country country = 1;
+}
+
+message DeleteCountryRequest {
+  string id = 1;
+}
+
+message DeleteCountryResponse {
+  bool success = 1;
+}
+
+message GetCountryRequest {
+  string id = 1;
+}
+
+message GetCountryResponse {
+  Country country = 1;
+}
+
+message GetCountryByCodeRequest {
+  string code = 1;
+}
+
+message GetCountryByCodeResponse {
+  Country country = 1;
+}
+
+message ListCountriesRequest {
+  int32 page = 1;
+  int32 page_size = 2;
+  string search = 3;
+  string region = 4;
+  string status = 5;
+  string code = 6;
+}
+
+message ListCountriesResponse {
+  repeated Country countries = 1;
+  int64 total = 2;
+}
+
+message SearchCountriesRequest {
+  string query = 1;
+}
+
+message SearchCountriesResponse {
+  repeated Country countries = 1;
+}
+
+message Country {
+  string id = 1;
+  string code = 2;
+  string name = 3;
+  string name_en = 4;
+  string region = 5;
+  string sub_region = 6;
+  string currency_code = 7;
+  string currency_symbol = 8;
+  string phone_code = 9;
+  string time_zone = 10;
+  string flag = 11;
+  string capital = 12;
+  int64 population = 13;
+  string iso3166_alpha3 = 14;
+  string iso3166_numeric = 15;
+  string status = 16;
+  string created_at = 17;
+  string updated_at = 18;
+}
+

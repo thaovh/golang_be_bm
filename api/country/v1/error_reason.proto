@@ -1,0 +1,13 @@
+syntax = "proto3";
+
+package country.v1;
+
+option go_package = "github.com/go-kratos/kratos-layout/api/country/v1;v1";
+
+enum ErrorReason {
+  COUNTRY_UNSPECIFIED = 0;
+  COUNTRY_NOT_FOUND = 1;
+  COUNTRY_ALREADY_EXISTS = 2;
+  INVALID_COUNTRY_CODE = 3;
+}
+

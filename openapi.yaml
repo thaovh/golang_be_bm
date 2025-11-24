@@ -114,6 +114,157 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/auth.v1.RevokeAllTokensResponse'
+    /api/v1/countries:
+        get:
+            tags:
+                - CountryService
+            operationId: CountryService_ListCountries
+            parameters:
+                - name: page
+                  in: query
+                  schema:
+                    type: integer
+                    format: int32
+                - name: pageSize
+                  in: query
+                  schema:
+                    type: integer
+                    format: int32
+                - name: search
+                  in: query
+                  schema:
+                    type: string
+                - name: region
+                  in: query
+                  schema:
+                    type: string
+                - name: status
+                  in: query
+                  schema:
+                    type: string
+                - name: code
+                  in: query
+                  schema:
+                    type: string
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/country.v1.ListCountriesResponse'
+        post:
+            tags:
+                - CountryService
+            description: Commands
+            operationId: CountryService_CreateCountry
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/country.v1.CreateCountryRequest'
+                required: true
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/country.v1.CreateCountryResponse'
+    /api/v1/countries/code/{code}:
+        get:
+            tags:
+                - CountryService
+            operationId: CountryService_GetCountryByCode
+            parameters:
+                - name: code
+                  in: path
+                  required: true
+                  schema:
+                    type: string
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/country.v1.GetCountryByCodeResponse'
+    /api/v1/countries/search:
+        get:
+            tags:
+                - CountryService
+            operationId: CountryService_SearchCountries
+            parameters:
+                - name: query
+                  in: query
+                  schema:
+                    type: string
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/country.v1.SearchCountriesResponse'
+    /api/v1/countries/{id}:
+        get:
+            tags:
+                - CountryService
+            description: Queries
+            operationId: CountryService_GetCountry
+            parameters:
+                - name: id
+                  in: path
+                  required: true
+                  schema:
+                    type: string
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/country.v1.GetCountryResponse'
+        put:
+            tags:
+                - CountryService
+            operationId: CountryService_UpdateCountry
+            parameters:
+                - name: id
+                  in: path
+                  required: true
+                  schema:
+                    type: string
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/country.v1.UpdateCountryRequest'
+                required: true
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/country.v1.UpdateCountryResponse'
+        delete:
+            tags:
+                - CountryService
+            operationId: CountryService_DeleteCountry
+            parameters:
+                - name: id
+                  in: path
+                  required: true
+                  schema:
+                    type: string
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/country.v1.DeleteCountryResponse'
     /api/v1/users:
         get:
             tags:
@@ -405,6 +556,153 @@ components:
                     type: string
                 status:
                     type: string
+        country.v1.Country:
+            type: object
+            properties:
+                id:
+                    type: string
+                code:
+                    type: string
+                name:
+                    type: string
+                nameEn:
+                    type: string
+                region:
+                    type: string
+                subRegion:
+                    type: string
+                currencyCode:
+                    type: string
+                currencySymbol:
+                    type: string
+                phoneCode:
+                    type: string
+                timeZone:
+                    type: string
+                flag:
+                    type: string
+                capital:
+                    type: string
+                population:
+                    type: string
+                iso3166Alpha3:
+                    type: string
+                iso3166Numeric:
+                    type: string
+                status:
+                    type: string
+                createdAt:
+                    type: string
+                updatedAt:
+                    type: string
+        country.v1.CreateCountryRequest:
+            type: object
+            properties:
+                code:
+                    type: string
+                name:
+                    type: string
+                nameEn:
+                    type: string
+                region:
+                    type: string
+                subRegion:
+                    type: string
+                currencyCode:
+                    type: string
+                currencySymbol:
+                    type: string
+                phoneCode:
+                    type: string
+                timeZone:
+                    type: string
+                flag:
+                    type: string
+                capital:
+                    type: string
+                population:
+                    type: string
+                iso3166Alpha3:
+                    type: string
+                iso3166Numeric:
+                    type: string
+            description: Request/Response messages
+        country.v1.CreateCountryResponse:
+            type: object
+            properties:
+                country:
+                    $ref: '#/components/schemas/country.v1.Country'
+        country.v1.DeleteCountryResponse:
+            type: object
+            properties:
+                success:
+                    type: boolean
+        country.v1.GetCountryByCodeResponse:
+            type: object
+            properties:
+                country:
+                    $ref: '#/components/schemas/country.v1.Country'
+        country.v1.GetCountryResponse:
+            type: object
+            properties:
+                country:
+                    $ref: '#/components/schemas/country.v1.Country'
+        country.v1.ListCountriesResponse:
+            type: object
+            properties:
+                countries:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/country.v1.Country'
+                total:
+                    type: string
+        country.v1.SearchCountriesResponse:
+            type: object
+            properties:
+                countries:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/country.v1.Country'
+        country.v1.UpdateCountryRequest:
+            type: object
+            properties:
+                id:
+                    type: string
+                code:
+                    type: string
+                name:
+                    type: string
+                nameEn:
+                    type: string
+                region:
+                    type: string
+                subRegion:
+                    type: string
+                currencyCode:
+                    type: string
+                currencySymbol:
+                    type: string
+                phoneCode:
+                    type: string
+                timeZone:
+                    type: string
+                flag:
+                    type: string
+                capital:
+                    type: string
+                population:
+                    type: string
+                iso3166Alpha3:
+                    type: string
+                iso3166Numeric:
+                    type: string
+                status:
+                    type: string
+        country.v1.UpdateCountryResponse:
+            type: object
+            properties:
+                country:
+                    $ref: '#/components/schemas/country.v1.Country'
         helloworld.v1.HelloReply:
             type: object
             properties:
@@ -528,6 +826,7 @@ components:
             description: User message
 tags:
     - name: AuthService
+    - name: CountryService
     - name: Greeter
       description: The greeting service definition.
     - name: UserService

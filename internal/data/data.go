@@ -18,6 +18,8 @@ var ProviderSet = wire.NewSet(
 	NewUserQueryRepo,
 	NewAuthCommandRepo,
 	NewAuthQueryRepo,
+	NewCountryCommandRepo,
+	NewCountryQueryRepo,
 )
 
 // Data chứa cả read và write database

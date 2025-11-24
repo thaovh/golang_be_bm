@@ -2,6 +2,7 @@ package server
 
 import (
 	authv1 "github.com/go-kratos/kratos-layout/api/auth/v1"
+	countryv1 "github.com/go-kratos/kratos-layout/api/country/v1"
 	helloworldv1 "github.com/go-kratos/kratos-layout/api/helloworld/v1"
 	userv1 "github.com/go-kratos/kratos-layout/api/user/v1"
 	"github.com/go-kratos/kratos-layout/internal/conf"
@@ -13,7 +14,7 @@ import (
 )
 
 // NewGRPCServer new a gRPC server.
-func NewGRPCServer(c *conf.Server, greeter *service.GreeterService, user *service.UserService, auth *service.AuthService, logger log.Logger) *grpc.Server {
+func NewGRPCServer(c *conf.Server, greeter *service.GreeterService, user *service.UserService, auth *service.AuthService, country *service.CountryService, logger log.Logger) *grpc.Server {
 	var opts = []grpc.ServerOption{
 		grpc.Middleware(
 			recovery.Recovery(),
@@ -32,5 +33,6 @@ func NewGRPCServer(c *conf.Server, greeter *service.GreeterService, user *servic
 	helloworldv1.RegisterGreeterServer(srv, greeter)
 	userv1.RegisterUserServiceServer(srv, user)
 	authv1.RegisterAuthServiceServer(srv, auth)
+	countryv1.RegisterCountryServiceServer(srv, country)
 	return srv
 }
