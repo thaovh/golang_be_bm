@@ -32,6 +32,7 @@ func NewHTTPServer(c *conf.Server, greeter *service.GreeterService, user *servic
 		"/api/v1/users",
 		"/api/v1/countries", // Country CRUD operations require authentication
 		"/api/v1/provinces", // Province CRUD operations require authentication
+		"/api/v1/wards",    // Ward CRUD operations require authentication
 		"/api/v1/auth/me",
 		"/api/v1/auth/logout",
 		"/api/v1/auth/revoke-all",
