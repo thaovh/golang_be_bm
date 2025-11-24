@@ -28,6 +28,7 @@ func NewHTTPServer(c *conf.Server, greeter *service.GreeterService, user *servic
 	// Protected routes (require authentication)
 	protectedPaths := []string{
 		"/api/v1/users",
+		"/api/v1/countries", // Country CRUD operations require authentication
 		"/api/v1/auth/me",
 		"/api/v1/auth/logout",
 		"/api/v1/auth/revoke-all",
