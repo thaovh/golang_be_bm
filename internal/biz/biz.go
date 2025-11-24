@@ -10,4 +10,5 @@ var ProviderSet = wire.NewSet(
 	NewAuthUsecase,
 	NewCountryUsecase,
 	NewProvinceUsecase,
+	NewWardUsecase,
 )

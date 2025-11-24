@@ -6,6 +6,7 @@ import (
 	helloworldv1 "github.com/go-kratos/kratos-layout/api/helloworld/v1"
 	provincev1 "github.com/go-kratos/kratos-layout/api/province/v1"
 	userv1 "github.com/go-kratos/kratos-layout/api/user/v1"
+	wardv1 "github.com/go-kratos/kratos-layout/api/ward/v1"
 	"github.com/go-kratos/kratos-layout/internal/conf"
 	"github.com/go-kratos/kratos-layout/internal/service"
 
@@ -15,7 +16,7 @@ import (
 )
 
 // NewGRPCServer new a gRPC server.
-func NewGRPCServer(c *conf.Server, greeter *service.GreeterService, user *service.UserService, auth *service.AuthService, country *service.CountryService, province *service.ProvinceService, logger log.Logger) *grpc.Server {
+func NewGRPCServer(c *conf.Server, greeter *service.GreeterService, user *service.UserService, auth *service.AuthService, country *service.CountryService, province *service.ProvinceService, ward *service.WardService, logger log.Logger) *grpc.Server {
 	var opts = []grpc.ServerOption{
 		grpc.Middleware(
 			recovery.Recovery(),
@@ -36,5 +37,6 @@ func NewGRPCServer(c *conf.Server, greeter *service.GreeterService, user *servic
 	authv1.RegisterAuthServiceServer(srv, auth)
 	countryv1.RegisterCountryServiceServer(srv, country)
 	provincev1.RegisterProvinceServiceServer(srv, province)
+	wardv1.RegisterWardServiceServer(srv, ward)
 	return srv
 }

@@ -1,0 +1,163 @@
+syntax = "proto3";
+
+package ward.v1;
+
+import "google/api/annotations.proto";
+
+option go_package = "github.com/go-kratos/kratos-layout/api/ward/v1;v1";
+
+service WardService {
+  // Commands
+  rpc CreateWard (CreateWardRequest) returns (CreateWardResponse) {
+    option (google.api.http) = {
+      post: "/api/v1/wards"
+      body: "*"
+    };
+  }
+  
+  rpc UpdateWard (UpdateWardRequest) returns (UpdateWardResponse) {
+    option (google.api.http) = {
+      put: "/api/v1/wards/{id}"
+      body: "*"
+    };
+  }
+  
+  rpc DeleteWard (DeleteWardRequest) returns (DeleteWardResponse) {
+    option (google.api.http) = {
+      delete: "/api/v1/wards/{id}"
+    };
+  }
+  
+  // Queries
+  rpc GetWard (GetWardRequest) returns (GetWardResponse) {
+    option (google.api.http) = {
+      get: "/api/v1/wards/{id}"
+    };
+  }
+  
+  rpc GetWardByCode (GetWardByCodeRequest) returns (GetWardByCodeResponse) {
+    option (google.api.http) = {
+      get: "/api/v1/wards/code/{code}"
+    };
+  }
+  
+  rpc ListWards (ListWardsRequest) returns (ListWardsResponse) {
+    option (google.api.http) = {
+      get: "/api/v1/wards"
+    };
+  }
+  
+  rpc ListWardsByProvince (ListWardsByProvinceRequest) returns (ListWardsByProvinceResponse) {
+    option (google.api.http) = {
+      get: "/api/v1/provinces/{province_id}/wards"
+    };
+  }
+}
+
+// Request/Response messages
+message CreateWardRequest {
+  string province_id = 1;
+  string code = 2;
+  string name = 3;
+  string name_en = 4;
+  string type = 5;
+  double area = 6;
+  int64 population = 7;
+  string coordinates = 8;
+  string postal_code = 9;
+  string address = 10;
+  int32 sort_order = 11;
+}
+
+message CreateWardResponse {
+  Ward ward = 1;
+}
+
+message UpdateWardRequest {
+  string id = 1;
+  string province_id = 2;
+  string code = 3;
+  string name = 4;
+  string name_en = 5;
+  string type = 6;
+  double area = 7;
+  int64 population = 8;
+  string coordinates = 9;
+  string postal_code = 10;
+  string address = 11;
+  int32 sort_order = 12;
+  string status = 13;
+}
+
+message UpdateWardResponse {
+  Ward ward = 1;
+}
+
+message DeleteWardRequest {
+  string id = 1;
+}
+
+message DeleteWardResponse {
+  bool success = 1;
+}
+
+message GetWardRequest {
+  string id = 1;
+}
+
+message GetWardResponse {
+  Ward ward = 1;
+}
+
+message GetWardByCodeRequest {
+  string code = 1;
+  string province_id = 2;
+}
+
+message GetWardByCodeResponse {
+  Ward ward = 1;
+}
+
+message ListWardsRequest {
+  int32 page = 1;
+  int32 page_size = 2;
+  string search = 3;
+  string province_id = 4;
+  string type = 5;
+  string status = 6;
+  string code = 7;
+}
+
+message ListWardsResponse {
+  repeated Ward wards = 1;
+  int64 total = 2;
+}
+
+message ListWardsByProvinceRequest {
+  string province_id = 1;
+}
+
+message ListWardsByProvinceResponse {
+  repeated Ward wards = 1;
+}
+
+message Ward {
+  string id = 1;
+  string province_id = 2;
+  string code = 3;
+  string name = 4;
+  string name_en = 5;
+  string type = 6;
+  double area = 7;
+  int64 population = 8;
+  string coordinates = 9;
+  string postal_code = 10;
+  string address = 11;
+  int32 sort_order = 12;
+  string status = 13;
+  string created_at = 14;
+  string updated_at = 15;
+  string created_by = 16;
+  string updated_by = 17;
+}
+

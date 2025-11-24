@@ -8,6 +8,7 @@ import (
 	helloworldv1 "github.com/go-kratos/kratos-layout/api/helloworld/v1"
 	provincev1 "github.com/go-kratos/kratos-layout/api/province/v1"
 	userv1 "github.com/go-kratos/kratos-layout/api/user/v1"
+	wardv1 "github.com/go-kratos/kratos-layout/api/ward/v1"
 	"github.com/go-kratos/kratos-layout/internal/conf"
 	"github.com/go-kratos/kratos-layout/internal/middleware"
 	"github.com/go-kratos/kratos-layout/internal/service"
@@ -19,7 +20,7 @@ import (
 )
 
 // NewHTTPServer new an HTTP server.
-func NewHTTPServer(c *conf.Server, greeter *service.GreeterService, user *service.UserService, auth *service.AuthService, country *service.CountryService, province *service.ProvinceService, authConfig *conf.Auth, logger log.Logger) *http.Server {
+func NewHTTPServer(c *conf.Server, greeter *service.GreeterService, user *service.UserService, auth *service.AuthService, country *service.CountryService, province *service.ProvinceService, ward *service.WardService, authConfig *conf.Auth, logger log.Logger) *http.Server {
 	// Rate limiting for login endpoint
 	loginRateLimit := middleware.LoginRateLimit()
 
@@ -93,6 +94,7 @@ func NewHTTPServer(c *conf.Server, greeter *service.GreeterService, user *servic
 	authv1.RegisterAuthServiceHTTPServer(srv, auth)
 	countryv1.RegisterCountryServiceHTTPServer(srv, country)
 	provincev1.RegisterProvinceServiceHTTPServer(srv, province)
+	wardv1.RegisterWardServiceHTTPServer(srv, ward)
 	
 	// Register Swagger UI
 	RegisterSwaggerUI(srv)

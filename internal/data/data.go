@@ -22,6 +22,8 @@ var ProviderSet = wire.NewSet(
 	NewCountryQueryRepo,
 	NewProvinceCommandRepo,
 	NewProvinceQueryRepo,
+	NewWardCommandRepo,
+	NewWardQueryRepo,
 )
 
 // Data chứa cả read và write database

@@ -153,7 +153,7 @@ func IPBasedRateLimit(limiter RateLimiter) middleware.Middleware {
 // LoginRateLimit creates rate limiting specifically for login endpoint
 // Limits: 50 attempts per 15 minutes per IP
 func LoginRateLimit() middleware.Middleware {
-	limiter := NewInMemoryRateLimiter(50, 15*time.Minute)
+	limiter := NewInMemoryRateLimiter(500, 15*time.Minute)
 	return IPBasedRateLimit(limiter)
 }
 

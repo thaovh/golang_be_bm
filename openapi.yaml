@@ -425,6 +425,24 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/province.v1.DeleteProvinceResponse'
+    /api/v1/provinces/{provinceId}/wards:
+        get:
+            tags:
+                - WardService
+            operationId: WardService_ListWardsByProvince
+            parameters:
+                - name: provinceId
+                  in: path
+                  required: true
+                  schema:
+                    type: string
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ward.v1.ListWardsByProvinceResponse'
     /api/v1/users:
         get:
             tags:
@@ -597,6 +615,148 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/user.v1.ChangePasswordResponse'
+    /api/v1/wards:
+        get:
+            tags:
+                - WardService
+            operationId: WardService_ListWards
+            parameters:
+                - name: page
+                  in: query
+                  schema:
+                    type: integer
+                    format: int32
+                - name: pageSize
+                  in: query
+                  schema:
+                    type: integer
+                    format: int32
+                - name: search
+                  in: query
+                  schema:
+                    type: string
+                - name: provinceId
+                  in: query
+                  schema:
+                    type: string
+                - name: type
+                  in: query
+                  schema:
+                    type: string
+                - name: status
+                  in: query
+                  schema:
+                    type: string
+                - name: code
+                  in: query
+                  schema:
+                    type: string
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ward.v1.ListWardsResponse'
+        post:
+            tags:
+                - WardService
+            description: Commands
+            operationId: WardService_CreateWard
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/ward.v1.CreateWardRequest'
+                required: true
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ward.v1.CreateWardResponse'
+    /api/v1/wards/code/{code}:
+        get:
+            tags:
+                - WardService
+            operationId: WardService_GetWardByCode
+            parameters:
+                - name: code
+                  in: path
+                  required: true
+                  schema:
+                    type: string
+                - name: provinceId
+                  in: query
+                  schema:
+                    type: string
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ward.v1.GetWardByCodeResponse'
+    /api/v1/wards/{id}:
+        get:
+            tags:
+                - WardService
+            description: Queries
+            operationId: WardService_GetWard
+            parameters:
+                - name: id
+                  in: path
+                  required: true
+                  schema:
+                    type: string
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ward.v1.GetWardResponse'
+        put:
+            tags:
+                - WardService
+            operationId: WardService_UpdateWard
+            parameters:
+                - name: id
+                  in: path
+                  required: true
+                  schema:
+                    type: string
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/ward.v1.UpdateWardRequest'
+                required: true
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ward.v1.UpdateWardResponse'
+        delete:
+            tags:
+                - WardService
+            operationId: WardService_DeleteWard
+            parameters:
+                - name: id
+                  in: path
+                  required: true
+                  schema:
+                    type: string
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ward.v1.DeleteWardResponse'
     /helloworld/{name}:
         get:
             tags:
@@ -1129,6 +1289,145 @@ components:
                 updatedAt:
                     type: string
             description: User message
+        ward.v1.CreateWardRequest:
+            type: object
+            properties:
+                provinceId:
+                    type: string
+                code:
+                    type: string
+                name:
+                    type: string
+                nameEn:
+                    type: string
+                type:
+                    type: string
+                area:
+                    type: number
+                    format: double
+                population:
+                    type: string
+                coordinates:
+                    type: string
+                postalCode:
+                    type: string
+                address:
+                    type: string
+                sortOrder:
+                    type: integer
+                    format: int32
+            description: Request/Response messages
+        ward.v1.CreateWardResponse:
+            type: object
+            properties:
+                ward:
+                    $ref: '#/components/schemas/ward.v1.Ward'
+        ward.v1.DeleteWardResponse:
+            type: object
+            properties:
+                success:
+                    type: boolean
+        ward.v1.GetWardByCodeResponse:
+            type: object
+            properties:
+                ward:
+                    $ref: '#/components/schemas/ward.v1.Ward'
+        ward.v1.GetWardResponse:
+            type: object
+            properties:
+                ward:
+                    $ref: '#/components/schemas/ward.v1.Ward'
+        ward.v1.ListWardsByProvinceResponse:
+            type: object
+            properties:
+                wards:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/ward.v1.Ward'
+        ward.v1.ListWardsResponse:
+            type: object
+            properties:
+                wards:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/ward.v1.Ward'
+                total:
+                    type: string
+        ward.v1.UpdateWardRequest:
+            type: object
+            properties:
+                id:
+                    type: string
+                provinceId:
+                    type: string
+                code:
+                    type: string
+                name:
+                    type: string
+                nameEn:
+                    type: string
+                type:
+                    type: string
+                area:
+                    type: number
+                    format: double
+                population:
+                    type: string
+                coordinates:
+                    type: string
+                postalCode:
+                    type: string
+                address:
+                    type: string
+                sortOrder:
+                    type: integer
+                    format: int32
+                status:
+                    type: string
+        ward.v1.UpdateWardResponse:
+            type: object
+            properties:
+                ward:
+                    $ref: '#/components/schemas/ward.v1.Ward'
+        ward.v1.Ward:
+            type: object
+            properties:
+                id:
+                    type: string
+                provinceId:
+                    type: string
+                code:
+                    type: string
+                name:
+                    type: string
+                nameEn:
+                    type: string
+                type:
+                    type: string
+                area:
+                    type: number
+                    format: double
+                population:
+                    type: string
+                coordinates:
+                    type: string
+                postalCode:
+                    type: string
+                address:
+                    type: string
+                sortOrder:
+                    type: integer
+                    format: int32
+                status:
+                    type: string
+                createdAt:
+                    type: string
+                updatedAt:
+                    type: string
+                createdBy:
+                    type: string
+                updatedBy:
+                    type: string
 tags:
     - name: AuthService
     - name: CountryService
@@ -1136,3 +1435,4 @@ tags:
       description: The greeting service definition.
     - name: ProvinceService
     - name: UserService
+    - name: WardService
