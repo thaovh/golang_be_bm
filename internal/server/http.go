@@ -6,6 +6,7 @@ import (
 	authv1 "github.com/go-kratos/kratos-layout/api/auth/v1"
 	countryv1 "github.com/go-kratos/kratos-layout/api/country/v1"
 	helloworldv1 "github.com/go-kratos/kratos-layout/api/helloworld/v1"
+	provincev1 "github.com/go-kratos/kratos-layout/api/province/v1"
 	userv1 "github.com/go-kratos/kratos-layout/api/user/v1"
 	"github.com/go-kratos/kratos-layout/internal/conf"
 	"github.com/go-kratos/kratos-layout/internal/middleware"
@@ -18,7 +19,7 @@ import (
 )
 
 // NewHTTPServer new an HTTP server.
-func NewHTTPServer(c *conf.Server, greeter *service.GreeterService, user *service.UserService, auth *service.AuthService, country *service.CountryService, authConfig *conf.Auth, logger log.Logger) *http.Server {
+func NewHTTPServer(c *conf.Server, greeter *service.GreeterService, user *service.UserService, auth *service.AuthService, country *service.CountryService, province *service.ProvinceService, authConfig *conf.Auth, logger log.Logger) *http.Server {
 	// Rate limiting for login endpoint
 	loginRateLimit := middleware.LoginRateLimit()
 
@@ -29,6 +30,7 @@ func NewHTTPServer(c *conf.Server, greeter *service.GreeterService, user *servic
 	protectedPaths := []string{
 		"/api/v1/users",
 		"/api/v1/countries", // Country CRUD operations require authentication
+		"/api/v1/provinces", // Province CRUD operations require authentication
 		"/api/v1/auth/me",
 		"/api/v1/auth/logout",
 		"/api/v1/auth/revoke-all",
@@ -90,6 +92,7 @@ func NewHTTPServer(c *conf.Server, greeter *service.GreeterService, user *servic
 	userv1.RegisterUserServiceHTTPServer(srv, user)
 	authv1.RegisterAuthServiceHTTPServer(srv, auth)
 	countryv1.RegisterCountryServiceHTTPServer(srv, country)
+	provincev1.RegisterProvinceServiceHTTPServer(srv, province)
 	
 	// Register Swagger UI
 	RegisterSwaggerUI(srv)

@@ -206,6 +206,24 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/country.v1.SearchCountriesResponse'
+    /api/v1/countries/{countryId}/provinces:
+        get:
+            tags:
+                - ProvinceService
+            operationId: ProvinceService_ListProvincesByCountry
+            parameters:
+                - name: countryId
+                  in: path
+                  required: true
+                  schema:
+                    type: string
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/province.v1.ListProvincesByCountryResponse'
     /api/v1/countries/{id}:
         get:
             tags:
@@ -265,6 +283,148 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/country.v1.DeleteCountryResponse'
+    /api/v1/provinces:
+        get:
+            tags:
+                - ProvinceService
+            operationId: ProvinceService_ListProvinces
+            parameters:
+                - name: page
+                  in: query
+                  schema:
+                    type: integer
+                    format: int32
+                - name: pageSize
+                  in: query
+                  schema:
+                    type: integer
+                    format: int32
+                - name: search
+                  in: query
+                  schema:
+                    type: string
+                - name: countryId
+                  in: query
+                  schema:
+                    type: string
+                - name: type
+                  in: query
+                  schema:
+                    type: string
+                - name: status
+                  in: query
+                  schema:
+                    type: string
+                - name: code
+                  in: query
+                  schema:
+                    type: string
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/province.v1.ListProvincesResponse'
+        post:
+            tags:
+                - ProvinceService
+            description: Commands
+            operationId: ProvinceService_CreateProvince
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/province.v1.CreateProvinceRequest'
+                required: true
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/province.v1.CreateProvinceResponse'
+    /api/v1/provinces/code/{code}:
+        get:
+            tags:
+                - ProvinceService
+            operationId: ProvinceService_GetProvinceByCode
+            parameters:
+                - name: code
+                  in: path
+                  required: true
+                  schema:
+                    type: string
+                - name: countryId
+                  in: query
+                  schema:
+                    type: string
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/province.v1.GetProvinceByCodeResponse'
+    /api/v1/provinces/{id}:
+        get:
+            tags:
+                - ProvinceService
+            description: Queries
+            operationId: ProvinceService_GetProvince
+            parameters:
+                - name: id
+                  in: path
+                  required: true
+                  schema:
+                    type: string
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/province.v1.GetProvinceResponse'
+        put:
+            tags:
+                - ProvinceService
+            operationId: ProvinceService_UpdateProvince
+            parameters:
+                - name: id
+                  in: path
+                  required: true
+                  schema:
+                    type: string
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/province.v1.UpdateProvinceRequest'
+                required: true
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/province.v1.UpdateProvinceResponse'
+        delete:
+            tags:
+                - ProvinceService
+            operationId: ProvinceService_DeleteProvince
+            parameters:
+                - name: id
+                  in: path
+                  required: true
+                  schema:
+                    type: string
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/province.v1.DeleteProvinceResponse'
     /api/v1/users:
         get:
             tags:
@@ -709,6 +869,151 @@ components:
                 message:
                     type: string
             description: The response message containing the greetings
+        province.v1.CreateProvinceRequest:
+            type: object
+            properties:
+                countryId:
+                    type: string
+                code:
+                    type: string
+                name:
+                    type: string
+                nameEn:
+                    type: string
+                type:
+                    type: string
+                area:
+                    type: number
+                    format: double
+                population:
+                    type: string
+                coordinates:
+                    type: string
+                capital:
+                    type: string
+                postalCode:
+                    type: string
+                phonePrefix:
+                    type: string
+                sortOrder:
+                    type: integer
+                    format: int32
+            description: Request/Response messages
+        province.v1.CreateProvinceResponse:
+            type: object
+            properties:
+                province:
+                    $ref: '#/components/schemas/province.v1.Province'
+        province.v1.DeleteProvinceResponse:
+            type: object
+            properties:
+                success:
+                    type: boolean
+        province.v1.GetProvinceByCodeResponse:
+            type: object
+            properties:
+                province:
+                    $ref: '#/components/schemas/province.v1.Province'
+        province.v1.GetProvinceResponse:
+            type: object
+            properties:
+                province:
+                    $ref: '#/components/schemas/province.v1.Province'
+        province.v1.ListProvincesByCountryResponse:
+            type: object
+            properties:
+                provinces:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/province.v1.Province'
+        province.v1.ListProvincesResponse:
+            type: object
+            properties:
+                provinces:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/province.v1.Province'
+                total:
+                    type: string
+        province.v1.Province:
+            type: object
+            properties:
+                id:
+                    type: string
+                countryId:
+                    type: string
+                code:
+                    type: string
+                name:
+                    type: string
+                nameEn:
+                    type: string
+                type:
+                    type: string
+                area:
+                    type: number
+                    format: double
+                population:
+                    type: string
+                coordinates:
+                    type: string
+                capital:
+                    type: string
+                postalCode:
+                    type: string
+                phonePrefix:
+                    type: string
+                sortOrder:
+                    type: integer
+                    format: int32
+                status:
+                    type: string
+                createdAt:
+                    type: string
+                updatedAt:
+                    type: string
+                createdBy:
+                    type: string
+                updatedBy:
+                    type: string
+        province.v1.UpdateProvinceRequest:
+            type: object
+            properties:
+                id:
+                    type: string
+                countryId:
+                    type: string
+                code:
+                    type: string
+                name:
+                    type: string
+                nameEn:
+                    type: string
+                type:
+                    type: string
+                area:
+                    type: number
+                    format: double
+                population:
+                    type: string
+                coordinates:
+                    type: string
+                capital:
+                    type: string
+                postalCode:
+                    type: string
+                phonePrefix:
+                    type: string
+                sortOrder:
+                    type: integer
+                    format: int32
+                status:
+                    type: string
+        province.v1.UpdateProvinceResponse:
+            type: object
+            properties:
+                province:
+                    $ref: '#/components/schemas/province.v1.Province'
         user.v1.ChangePasswordRequest:
             type: object
             properties:
@@ -829,4 +1134,5 @@ tags:
     - name: CountryService
     - name: Greeter
       description: The greeting service definition.
+    - name: ProvinceService
     - name: UserService
