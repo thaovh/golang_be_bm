@@ -31,15 +31,7 @@ CREATE TABLE IF NOT EXISTS countries (
     capital VARCHAR(100),
     population BIGINT,
     iso3166_alpha3 VARCHAR(3) UNIQUE,
-    iso3166_numeric VARCHAR(3),
-    
-    -- Indexes
-    CONSTRAINT idx_countries_deleted_at ON countries(deleted_at),
-    CONSTRAINT idx_countries_status ON countries(status),
-    CONSTRAINT idx_countries_code ON countries(code),
-    CONSTRAINT idx_countries_name ON countries(name),
-    CONSTRAINT idx_countries_name_en ON countries(name_en),
-    CONSTRAINT idx_countries_region ON countries(region)
+    iso3166_numeric VARCHAR(3)
 );
 
 -- Create indexes separately (PostgreSQL syntax)

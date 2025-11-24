@@ -4,6 +4,7 @@ import (
 	"context"
 
 	authv1 "github.com/go-kratos/kratos-layout/api/auth/v1"
+	countryv1 "github.com/go-kratos/kratos-layout/api/country/v1"
 	helloworldv1 "github.com/go-kratos/kratos-layout/api/helloworld/v1"
 	userv1 "github.com/go-kratos/kratos-layout/api/user/v1"
 	"github.com/go-kratos/kratos-layout/internal/conf"
