@@ -55,22 +55,24 @@ func (s *CountryService) UpdateCountry(ctx context.Context, req *v1.UpdateCountr
 	}
 
 	country := &biz.Country{
-		BaseEntity: biz.BaseEntity{ID: id},
-		Code:       req.Code,
-		Name:       req.Name,
-		NameEn:     req.NameEn,
-		Region:     req.Region,
-		SubRegion:  req.SubRegion,
-		CurrencyCode:   req.CurrencyCode,
-		CurrencySymbol: req.CurrencySymbol,
-		PhoneCode:      req.PhoneCode,
-		TimeZone:       req.TimeZone,
-		Flag:           req.Flag,
-		Capital:        req.Capital,
-		Population:     req.Population,
-		ISO3166Alpha3:  req.Iso3166Alpha3,
-		ISO3166Numeric: req.Iso3166Numeric,
-		Status:         req.Status,
+		BaseEntity: biz.BaseEntity{
+			ID:     id,
+			Status: req.Status,
+		},
+		Code:            req.Code,
+		Name:            req.Name,
+		NameEn:          req.NameEn,
+		Region:          req.Region,
+		SubRegion:       req.SubRegion,
+		CurrencyCode:    req.CurrencyCode,
+		CurrencySymbol:  req.CurrencySymbol,
+		PhoneCode:       req.PhoneCode,
+		TimeZone:        req.TimeZone,
+		Flag:            req.Flag,
+		Capital:         req.Capital,
+		Population:      req.Population,
+		ISO3166Alpha3:   req.Iso3166Alpha3,
+		ISO3166Numeric:  req.Iso3166Numeric,
 	}
 
 	updated, err := s.uc.UpdateCountry(ctx, country)
