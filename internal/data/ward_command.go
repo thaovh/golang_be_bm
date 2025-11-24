@@ -47,7 +47,7 @@ func (r *wardCommandRepo) Delete(ctx context.Context, id uuid.UUID) error {
 	db := r.data.GetWriteDB()
 	if err := db.WithContext(ctx).Delete(&biz.Ward{}, "id = ?", id).Error; err != nil {
 		r.log.WithContext(ctx).Errorf("Failed to delete ward: %v", err)
-		return nil, err
+		return err
 	}
 	return nil
 }
